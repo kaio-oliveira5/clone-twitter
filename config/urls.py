@@ -3,12 +3,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
+from posts.views import PostListCreateView
+
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
 from users.views import  ChangePasswordView, RegisterView, MeView
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -18,6 +21,7 @@ urlpatterns = [
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/me/", MeView.as_view(), name="me"),
     path("api/auth/password/", ChangePasswordView.as_view(), name="change-password"),
+    path("api/posts/", PostListCreateView.as_view(), name="posts"),
 ]
 
 if settings.DEBUG:
