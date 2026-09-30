@@ -1,3 +1,29 @@
-from django.shortcuts import render
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
-# Create your views here.
+from .serializers import (
+    ChangePasswordSerializer,
+    RegisterSerializer,
+    UserSerializer,
+)
+
+
+class RegisterView(generics.CreateAPIView):
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
+
+
+class MeView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
