@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
-import os 
+import os
 
 from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +25,10 @@ load_dotenv(BASE_DIR / ".env")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-089#fgtd+wbfpsyub2qms90v$j=y3s-020lg1%2ha6ejobvwd5"
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Security
+SECRET_KEY = os.getenv("SECRET_KEY")
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     "users",
 ]
 
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -58,7 +60,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 ROOT_URLCONF = "config.urls"
+
 
 TEMPLATES = [
     {
@@ -74,6 +78,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "config.wsgi.application"
 
@@ -129,9 +134,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # Email
-# https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
+# https://docs.djangoproject.com/en/6.1/topics/email/
 
 MAILERS = {
     "default": {
@@ -139,4 +147,19 @@ MAILERS = {
     },
 }
 
+
+# Custom user model
+
 AUTH_USER_MODEL = "users.User"
+
+
+# Django REST Framework
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
+}
