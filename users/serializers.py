@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from .models import Follow
+
 
 User = get_user_model()
 
@@ -59,3 +61,22 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.save()
 
         return user
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    follower = serializers.ReadOnlyField(source="follower.username")
+    following = serializers.ReadOnlyField(source="following.username")
+
+    class Meta:
+        model = Follow
+        fields = (
+            "id",
+            "follower",
+            "following",
+            "created_at",
+        )
+        read_only_fields = (
+            "id",
+            "follower",
+            "created_at",
+        )

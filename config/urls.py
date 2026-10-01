@@ -10,7 +10,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from users.views import  ChangePasswordView, RegisterView, MeView
+from users.views import (
+    ChangePasswordView,
+    FollowUserView,
+    MeView,
+    RegisterView,
+)
 
 
 urlpatterns = [
@@ -21,8 +26,16 @@ urlpatterns = [
     path("api/auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth/me/", MeView.as_view(), name="me"),
     path("api/auth/password/", ChangePasswordView.as_view(), name="change-password"),
+
     path("api/posts/", PostListCreateView.as_view(), name="posts"),
+
+    path(
+        "api/users/<int:user_id>/follow/",
+        FollowUserView.as_view(),
+        name="follow-user",
+    ),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
