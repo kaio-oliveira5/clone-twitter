@@ -3,7 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from posts.views import FeedView, PostListCreateView
+from posts.views import (
+    FeedView,
+    LikePostView,
+    PostCommentsView,
+    PostListCreateView,
+)
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -51,6 +56,16 @@ urlpatterns = [
         "api/posts/",
         PostListCreateView.as_view(),
         name="posts",
+    ),
+    path(
+        "api/posts/<int:post_id>/like/",
+        LikePostView.as_view(),
+        name="post-like",
+    ),
+    path(
+        "api/posts/<int:post_id>/comments/",
+        PostCommentsView.as_view(),
+        name="post-comments",
     ),
     path(
         "api/feed/",
