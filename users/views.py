@@ -91,3 +91,23 @@ class FollowUserView(APIView):
             {"detail": "Você deixou de seguir este usuário."},
             status=status.HTTP_200_OK,
         )
+
+
+class FollowingListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.filter(
+            followers__follower_id=self.kwargs["user_id"]
+        )
+
+
+class FollowersListView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.filter(
+            following__following_id=self.kwargs["user_id"]
+        )

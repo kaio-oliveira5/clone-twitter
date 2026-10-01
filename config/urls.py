@@ -17,6 +17,8 @@ from rest_framework_simplejwt.views import (
 
 from users.views import (
     ChangePasswordView,
+    FollowersListView,
+    FollowingListView,
     FollowUserView,
     MeView,
     RegisterView,
@@ -77,6 +79,16 @@ urlpatterns = [
         "api/users/<int:user_id>/follow/",
         FollowUserView.as_view(),
         name="follow-user",
+    ),
+    path(
+        "api/users/<int:user_id>/following/",
+        FollowingListView.as_view(),
+        name="following-list",
+    ),
+    path(
+        "api/users/<int:user_id>/followers/",
+        FollowersListView.as_view(),
+        name="followers-list",
     ),
 ]
 
