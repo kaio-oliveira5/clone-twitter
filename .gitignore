@@ -7,3 +7,5 @@ db.sqlite3
 .coverage
 media/
 staticfiles/
+frontend/node_modules/
+frontend/dist/
