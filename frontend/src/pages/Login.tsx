@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,9 +12,9 @@ function Login() {
     event.preventDefault();
 
     try {
-      const data = await login(username, password);
+      await login(username, password);
 
-      console.log(data);
+      navigate("/feed");
     } catch (error) {
       console.error(error);
     }
