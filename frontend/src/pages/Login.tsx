@@ -1,8 +1,12 @@
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 
-function Login() {
+interface LoginProps {
+  onLogin: () => void;
+}
+
+function Login({ onLogin }: LoginProps) {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
@@ -13,6 +17,8 @@ function Login() {
 
     try {
       await login(username, password);
+
+      onLogin();
 
       navigate("/feed");
     } catch (error) {
@@ -27,28 +33,36 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Usuário</label>
+
           <input
             id="username"
             type="text"
             name="username"
             value={username}
             onChange={(event) => setUsername(event.target.value)}
+            required
           />
         </div>
 
         <div>
           <label htmlFor="password">Senha</label>
+
           <input
             id="password"
             type="password"
             name="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            required
           />
         </div>
 
         <button type="submit">Entrar</button>
       </form>
+
+      <p>
+        Ainda não tem uma conta? <Link to="/register">Criar conta</Link>
+      </p>
     </main>
   );
 }
