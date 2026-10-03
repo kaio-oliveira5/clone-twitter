@@ -6,7 +6,7 @@ import {
   getProfile,
   unfollowUser,
   type UserProfile,
-} from "../services/auth";
+} from "../../services/auth";
 
 function Followers() {
   const [profile, setProfile] = useState<UserProfile | null>(null);

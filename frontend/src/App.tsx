@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import Feed from "./pages/Feed";
-import Followers from "./pages/Followers";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Register from "./pages/Register";
+import Feed from "./pages/Feed/Feed";
+import Followers from "./pages/Followers/Followers";
+import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import Register from "./pages/Register/Register";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(

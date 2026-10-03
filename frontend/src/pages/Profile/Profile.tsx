@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getProfile, updateProfile, type UserProfile } from "../services/auth";
+import {
+  getProfile,
+  updateProfile,
+  type UserProfile,
+} from "../../services/auth";
 
 function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);

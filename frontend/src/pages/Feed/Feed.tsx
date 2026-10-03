@@ -6,9 +6,9 @@ import {
   getFeed,
   likePost,
   unlikePost,
-  type Comment,
+  type Comment as FeedComment,
   type FeedPost,
-} from "../services/feed";
+} from "../../services/feed";
 
 function Feed() {
   const [posts, setPosts] = useState<FeedPost[]>([]);
@@ -17,7 +17,7 @@ function Feed() {
   const [posting, setPosting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [likedPosts, setLikedPosts] = useState<number[]>([]);
-  const [comments, setComments] = useState<Record<number, Comment[]>>({});
+  const [comments, setComments] = useState<Record<number, FeedComment[]>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>(
     {},
   );
