@@ -1,19 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
-import Feed from "./pages/Feed";
-import Followers from "./pages/Followers";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Register from "./pages/Register";
+import Layout from "./components/Layout/Layout";
+import Feed from "./pages/Feed/Feed";
+import Followers from "./pages/Followers/Followers";
+import Login from "./pages/Login/Login";
+import Profile from "./pages/Profile/Profile";
+import Register from "./pages/Register/Register";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     Boolean(localStorage.getItem("access_token")),
   );
 
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("theme") === "dark",
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDarkMode ? "dark" : "light",
+    );
+
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+  }, [isDarkMode]);
+
+  function toggleTheme() {
+    setIsDarkMode((currentTheme) => !currentTheme);
+  }
+
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/feed" replace />} />
+
       <Route
         path="/login"
         element={
@@ -36,7 +55,11 @@ function App() {
         path="/feed"
         element={
           isAuthenticated ? (
-            <Layout onLogout={() => setIsAuthenticated(false)}>
+            <Layout
+              onLogout={() => setIsAuthenticated(false)}
+              isDarkMode={isDarkMode}
+              onToggleTheme={toggleTheme}
+            >
               <Feed />
             </Layout>
           ) : (
@@ -49,7 +72,11 @@ function App() {
         path="/profile"
         element={
           isAuthenticated ? (
-            <Layout onLogout={() => setIsAuthenticated(false)}>
+            <Layout
+              onLogout={() => setIsAuthenticated(false)}
+              isDarkMode={isDarkMode}
+              onToggleTheme={toggleTheme}
+            >
               <Profile />
             </Layout>
           ) : (
@@ -62,7 +89,11 @@ function App() {
         path="/followers"
         element={
           isAuthenticated ? (
-            <Layout onLogout={() => setIsAuthenticated(false)}>
+            <Layout
+              onLogout={() => setIsAuthenticated(false)}
+              isDarkMode={isDarkMode}
+              onToggleTheme={toggleTheme}
+            >
               <Followers />
             </Layout>
           ) : (

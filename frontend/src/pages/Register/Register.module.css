@@ -1,0 +1,87 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.2;
+}
+
+.header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input {
+  min-height: 46px;
+  padding: 0 14px;
+}
+
+.submitButton {
+  min-height: 46px;
+  margin-top: 4px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.submitButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.success {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background-color: rgb(23 191 99 / 10%);
+  color: var(--color-success);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.error {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background-color: rgb(224 36 94 / 10%);
+  color: var(--color-danger);
+  font-size: 14px;
+  font-weight: 600;
+}
