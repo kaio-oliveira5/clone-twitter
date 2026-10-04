@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   followUser,
   getFollowers,
@@ -7,14 +8,20 @@ import {
   unfollowUser,
   type UserProfile,
 } from "../../services/auth";
+import styles from "./Followers.module.css";
 
 function Followers() {
+  const [searchParams] = useSearchParams();
+
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [followers, setFollowers] = useState<UserProfile[]>([]);
   const [following, setFollowing] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [followingUsers, setFollowingUsers] = useState<number[]>([]);
+
+  const followingSectionRef = useRef<HTMLElement | null>(null);
+  const followersSectionRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     async function loadFollowers() {
@@ -40,6 +47,28 @@ function Followers() {
 
     loadFollowers();
   }, []);
+
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    const tab = searchParams.get("tab");
+
+    if (tab === "following") {
+      followingSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+
+    if (tab === "followers") {
+      followersSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [loading, searchParams]);
 
   async function handleFollow(userId: number) {
     try {
@@ -72,70 +101,133 @@ function Followers() {
   }
 
   if (loading) {
-    return <main>Carregando seguidores...</main>;
+    return <main className={styles.loading}>Carregando seguidores...</main>;
   }
 
   if (errorMessage && !profile) {
-    return <main>{errorMessage}</main>;
+    return <main className={styles.loading}>{errorMessage}</main>;
   }
 
   if (!profile) {
-    return <main>Perfil não encontrado.</main>;
+    return <main className={styles.loading}>Perfil não encontrado.</main>;
   }
 
   return (
-    <main>
-      <h1>Seguidores e seguindo</h1>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <h1>Seguidores e seguindo</h1>
+          <p>Gerencie as pessoas que você segue e veja quem segue você.</p>
+        </header>
 
-      {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-      <section>
-        <h2>Seguindo ({following.length})</h2>
+        <div className={styles.sections}>
+          <section ref={followingSectionRef} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2>Seguindo</h2>
+              <span>{following.length}</span>
+            </div>
 
-        {following.length === 0 ? (
-          <p>Você ainda não segue ninguém.</p>
-        ) : (
-          following.map((user) => (
-            <article key={user.id}>
-              <h3>{user.name}</h3>
+            {following.length === 0 ? (
+              <div className={styles.empty}>
+                <p>Você ainda não segue ninguém.</p>
+              </div>
+            ) : (
+              <div className={styles.userList}>
+                {following.map((user) => (
+                  <article className={styles.user} key={user.id}>
+                    <div className={styles.userInfo}>
+                      <div className={styles.avatar}>
+                        {user.profile_image ? (
+                          <img
+                            src={user.profile_image}
+                            alt={`Foto de perfil de ${user.username}`}
+                          />
+                        ) : (
+                          <span>{user.username.charAt(0).toUpperCase()}</span>
+                        )}
+                      </div>
 
-              <p>@{user.username}</p>
+                      <div>
+                        <h3>{user.name || user.username}</h3>
+                        <p>@{user.username}</p>
+                      </div>
+                    </div>
 
-              <button type="button" onClick={() => handleUnfollow(user.id)}>
-                Deixar de seguir
-              </button>
-            </article>
-          ))
-        )}
-      </section>
+                    <button
+                      className={styles.unfollowButton}
+                      type="button"
+                      onClick={() => handleUnfollow(user.id)}
+                    >
+                      Deixar de seguir
+                    </button>
+                  </article>
+                ))}
+              </div>
+            )}
+          </section>
 
-      <section>
-        <h2>Seguidores ({followers.length})</h2>
+          <section ref={followersSectionRef} className={styles.card}>
+            <div className={styles.cardHeader}>
+              <h2>Seguidores</h2>
+              <span>{followers.length}</span>
+            </div>
 
-        {followers.length === 0 ? (
-          <p>Você ainda não tem seguidores.</p>
-        ) : (
-          followers.map((user) => (
-            <article key={user.id}>
-              <h3>{user.name}</h3>
+            {followers.length === 0 ? (
+              <div className={styles.empty}>
+                <p>Você ainda não tem seguidores.</p>
+              </div>
+            ) : (
+              <div className={styles.userList}>
+                {followers.map((user) => {
+                  const isFollowing = followingUsers.includes(user.id);
 
-              <p>@{user.username}</p>
+                  return (
+                    <article className={styles.user} key={user.id}>
+                      <div className={styles.userInfo}>
+                        <div className={styles.avatar}>
+                          {user.profile_image ? (
+                            <img
+                              src={user.profile_image}
+                              alt={`Foto de perfil de ${user.username}`}
+                            />
+                          ) : (
+                            <span>{user.username.charAt(0).toUpperCase()}</span>
+                          )}
+                        </div>
 
-              {!followingUsers.includes(user.id) && (
-                <button type="button" onClick={() => handleFollow(user.id)}>
-                  Seguir
-                </button>
-              )}
+                        <div>
+                          <h3>{user.name || user.username}</h3>
+                          <p>@{user.username}</p>
+                        </div>
+                      </div>
 
-              {followingUsers.includes(user.id) && (
-                <button type="button" onClick={() => handleUnfollow(user.id)}>
-                  Deixar de seguir
-                </button>
-              )}
-            </article>
-          ))
-        )}
-      </section>
+                      {isFollowing ? (
+                        <button
+                          className={styles.unfollowButton}
+                          type="button"
+                          onClick={() => handleUnfollow(user.id)}
+                        >
+                          Deixar de seguir
+                        </button>
+                      ) : (
+                        <button
+                          className={styles.followButton}
+                          type="button"
+                          onClick={() => handleFollow(user.id)}
+                        >
+                          Seguir
+                        </button>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
     </main>
   );
 }

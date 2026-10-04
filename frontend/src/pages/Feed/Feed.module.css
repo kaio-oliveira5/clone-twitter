@@ -1,0 +1,281 @@
+.page {
+  min-height: 100vh;
+  padding: 32px 24px 48px;
+  background-color: var(--color-background);
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0 0 6px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.header p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+}
+
+.postForm {
+  width: 100%;
+  margin-bottom: 24px;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.postForm textarea {
+  width: 100%;
+  height: 110px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  resize: none;
+  font-size: 15px;
+  line-height: 1.5;
+
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.postForm textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.postForm textarea:focus {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 0 3px rgb(29 155 240 / 12%);
+}
+
+.postFormFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.counter {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.publishButton {
+  min-height: 40px;
+  padding: 0 20px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.publishButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post {
+  width: 100%;
+  padding: 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.postHeader h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.postHeader small {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.postContent {
+  margin: 16px 0;
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.actionButton {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.actionButton:hover {
+  background-color: var(--color-background);
+  color: var(--color-primary);
+}
+
+.actionButton.liked {
+  color: var(--color-danger);
+}
+
+.comments {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.comment {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.comment:last-of-type {
+  border-bottom: 0;
+}
+
+.comment strong {
+  font-size: 14px;
+}
+
+.comment p {
+  margin: 4px 0 0;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.commentForm {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.commentForm input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.commentForm input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(29 155 240 / 12%);
+}
+
+.commentButton {
+  flex-shrink: 0;
+  min-height: 42px;
+  padding: 0 16px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.commentButton:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.error {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background-color: rgb(224 36 94 / 10%);
+  color: var(--color-danger);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.empty {
+  padding: 32px 20px;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.loading,
+.loadingComments {
+  color: var(--color-text-secondary);
+}
+
+.loading {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.loadingComments {
+  margin: 16px 0 0;
+  font-size: 14px;
+}
+
+.noComments {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 24px 16px 40px;
+  }
+
+  .postForm,
+  .post {
+    padding: 16px;
+  }
+
+  .postHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .commentForm {
+    flex-direction: column;
+  }
+
+  .commentButton {
+    width: 100%;
+  }
+}

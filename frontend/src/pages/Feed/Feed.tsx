@@ -9,6 +9,17 @@ import {
   type Comment as FeedComment,
   type FeedPost,
 } from "../../services/feed";
+import styles from "./Feed.module.css";
+
+function formatPostDate(date: string) {
+  return new Date(date).toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 function Feed() {
   const [posts, setPosts] = useState<FeedPost[]>([]);
@@ -148,106 +159,138 @@ function Feed() {
   }
 
   if (loading) {
-    return <main>Carregando feed...</main>;
+    return <main className={styles.loading}>Carregando feed...</main>;
   }
 
   return (
-    <main>
-      <h1>Feed</h1>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <h1>Feed</h1>
+          <p>Veja as publicações das pessoas que você segue.</p>
+        </header>
 
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-          placeholder="O que está acontecendo?"
-          maxLength={280}
-          rows={4}
-        />
+        <form className={styles.postForm} onSubmit={handleSubmit}>
+          <textarea
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            placeholder="O que está acontecendo?"
+            maxLength={280}
+            rows={4}
+          />
 
-        <div>
-          <span>{content.length}/280</span>
+          <div className={styles.postFormFooter}>
+            <span className={styles.counter}>{content.length}/280</span>
 
-          <button type="submit" disabled={posting || !content.trim()}>
-            {posting ? "Publicando..." : "Publicar"}
-          </button>
-        </div>
-      </form>
+            <button
+              className={styles.publishButton}
+              type="submit"
+              disabled={posting || !content.trim()}
+            >
+              {posting ? "Publicando..." : "Publicar"}
+            </button>
+          </div>
+        </form>
 
-      {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-      {posts.length === 0 ? (
-        <p>Nenhum post encontrado.</p>
-      ) : (
-        posts.map((post) => {
-          const isLiked = likedPosts.includes(post.id);
-          const postComments = comments[post.id] || [];
-          const isLoadingComments = loadingComments.includes(post.id);
-          const isPostingComment = postingComments.includes(post.id);
+        <section className={styles.posts}>
+          {posts.length === 0 ? (
+            <div className={styles.empty}>
+              <p>Nenhum post encontrado.</p>
+            </div>
+          ) : (
+            posts.map((post) => {
+              const isLiked = likedPosts.includes(post.id);
+              const postComments = comments[post.id] || [];
+              const isLoadingComments = loadingComments.includes(post.id);
+              const isPostingComment = postingComments.includes(post.id);
 
-          return (
-            <article key={post.id}>
-              <h2>{post.author}</h2>
+              return (
+                <article className={styles.post} key={post.id}>
+                  <div className={styles.postHeader}>
+                    <h2>{post.author}</h2>
 
-              <p>{post.content}</p>
+                    <small>{formatPostDate(post.created_at)}</small>
+                  </div>
 
-              <small>{post.created_at}</small>
+                  <p className={styles.postContent}>{post.content}</p>
 
-              <div>
-                <button type="button" onClick={() => handleLike(post.id)}>
-                  {isLiked ? "❤️ Curtido" : "♡ Curtir"}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleLoadComments(post.id)}
-                >
-                  💬 Comentários
-                </button>
-              </div>
-
-              {isLoadingComments && <p>Carregando comentários...</p>}
-
-              {comments[post.id] && (
-                <div>
-                  {postComments.length === 0 ? (
-                    <p>Nenhum comentário ainda.</p>
-                  ) : (
-                    postComments.map((comment) => (
-                      <div key={comment.id}>
-                        <strong>{comment.author}</strong>
-                        <p>{comment.content}</p>
-                      </div>
-                    ))
-                  )}
-
-                  <form
-                    onSubmit={(event) => handleCommentSubmit(event, post.id)}
-                  >
-                    <input
-                      type="text"
-                      value={commentInputs[post.id] || ""}
-                      onChange={(event) =>
-                        handleCommentChange(post.id, event.target.value)
-                      }
-                      placeholder="Escreva um comentário..."
-                      maxLength={280}
-                    />
+                  <div className={styles.actions}>
+                    <button
+                      className={`${styles.actionButton} ${
+                        isLiked ? styles.liked : ""
+                      }`}
+                      type="button"
+                      onClick={() => handleLike(post.id)}
+                    >
+                      {isLiked ? "❤️ Curtido" : "♡ Curtir"}
+                    </button>
 
                     <button
-                      type="submit"
-                      disabled={
-                        isPostingComment || !commentInputs[post.id]?.trim()
-                      }
+                      className={styles.actionButton}
+                      type="button"
+                      onClick={() => handleLoadComments(post.id)}
                     >
-                      {isPostingComment ? "Enviando..." : "Comentar"}
+                      💬 Comentários
                     </button>
-                  </form>
-                </div>
-              )}
-            </article>
-          );
-        })
-      )}
+                  </div>
+
+                  {isLoadingComments && (
+                    <p className={styles.loadingComments}>
+                      Carregando comentários...
+                    </p>
+                  )}
+
+                  {comments[post.id] && (
+                    <div className={styles.comments}>
+                      {postComments.length === 0 ? (
+                        <p className={styles.noComments}>
+                          Nenhum comentário ainda.
+                        </p>
+                      ) : (
+                        postComments.map((comment) => (
+                          <div className={styles.comment} key={comment.id}>
+                            <strong>{comment.author}</strong>
+                            <p>{comment.content}</p>
+                          </div>
+                        ))
+                      )}
+
+                      <form
+                        className={styles.commentForm}
+                        onSubmit={(event) =>
+                          handleCommentSubmit(event, post.id)
+                        }
+                      >
+                        <input
+                          type="text"
+                          value={commentInputs[post.id] || ""}
+                          onChange={(event) =>
+                            handleCommentChange(post.id, event.target.value)
+                          }
+                          placeholder="Escreva um comentário..."
+                          maxLength={280}
+                        />
+
+                        <button
+                          className={styles.commentButton}
+                          type="submit"
+                          disabled={
+                            isPostingComment || !commentInputs[post.id]?.trim()
+                          }
+                        >
+                          {isPostingComment ? "Enviando..." : "Comentar"}
+                        </button>
+                      </form>
+                    </div>
+                  )}
+                </article>
+              );
+            })
+          )}
+        </section>
+      </div>
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Layout from "./components/Layout";
+import Layout from "./components/Layout/Layout";
 import Feed from "./pages/Feed/Feed";
 import Followers from "./pages/Followers/Followers";
 import Login from "./pages/Login/Login";
@@ -14,6 +14,8 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/feed" replace />} />
+
       <Route
         path="/login"
         element={

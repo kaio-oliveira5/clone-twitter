@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import styles from "./Register.module.css";
 
 function Register() {
   const navigate = useNavigate();
@@ -55,64 +56,75 @@ function Register() {
   }
 
   return (
-    <main>
-      <h1>Criar conta</h1>
-
-      {success && <p>{success}</p>}
-
-      {errorMessage && <p>{errorMessage}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Usuário</label>
-          <input
-            id="username"
-            type="text"
-            name="username"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            required
-          />
+    <main className={styles.page}>
+      <section className={styles.card}>
+        <div className={styles.header}>
+          <h1>Criar conta</h1>
+          <p>Crie sua conta para começar.</p>
         </div>
 
-        <div>
-          <label htmlFor="email">E-mail</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-        </div>
+        {success && <p className={styles.success}>{success}</p>}
 
-        <div>
-          <label htmlFor="name">Nome</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-          />
-        </div>
+        {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-        <div>
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-        </div>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.field}>
+            <label htmlFor="username">Usuário</label>
 
-        <button type="submit">Criar conta</button>
-      </form>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="email">E-mail</label>
+
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="name">Nome</label>
+
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="password">Senha</label>
+
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </div>
+
+          <button className={styles.submitButton} type="submit">
+            Criar conta
+          </button>
+        </form>
+      </section>
     </main>
   );
 }

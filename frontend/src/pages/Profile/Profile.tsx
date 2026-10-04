@@ -4,6 +4,7 @@ import {
   updateProfile,
   type UserProfile,
 } from "../../services/auth";
+import styles from "./Profile.module.css";
 
 function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -68,83 +69,107 @@ function Profile() {
   }
 
   if (loading) {
-    return <main>Carregando perfil...</main>;
+    return <main className={styles.loading}>Carregando perfil...</main>;
   }
 
   if (errorMessage && !profile) {
-    return <main>{errorMessage}</main>;
+    return <main className={styles.loading}>{errorMessage}</main>;
   }
 
   if (!profile) {
-    return <main>Perfil não encontrado.</main>;
+    return <main className={styles.loading}>Perfil não encontrado.</main>;
   }
 
   return (
-    <main>
-      <h1>Meu perfil</h1>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <h1>Meu perfil</h1>
+          <p>Visualize e atualize suas informações pessoais.</p>
+        </header>
 
-      {profile.profile_image && (
-        <img
-          src={profile.profile_image}
-          alt={`Foto de perfil de ${profile.username}`}
-          width="120"
-          height="120"
-        />
-      )}
+        <section className={styles.card}>
+          <div className={styles.profileHeader}>
+            <div className={styles.avatar}>
+              {profile.profile_image ? (
+                <img
+                  src={profile.profile_image}
+                  alt={`Foto de perfil de ${profile.username}`}
+                />
+              ) : (
+                <span>{profile.username.charAt(0).toUpperCase()}</span>
+              )}
+            </div>
 
-      <p>@{profile.username}</p>
+            <div className={styles.profileInfo}>
+              <h2>{profile.name || profile.username}</h2>
+              <p>@{profile.username}</p>
+              <span>{profile.email}</span>
+            </div>
+          </div>
 
-      <p>{profile.email}</p>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.field}>
+              <label htmlFor="profile-image">Foto de perfil</label>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="profile-image">Foto de perfil</label>
+              <input
+                id="profile-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
 
-          <input
-            id="profile-image"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
+              {profileImage && (
+                <p className={styles.selectedFile}>
+                  Imagem selecionada: {profileImage.name}
+                </p>
+              )}
+            </div>
 
-          {profileImage && <p>Imagem selecionada: {profileImage.name}</p>}
-        </div>
+            <div className={styles.field}>
+              <label htmlFor="name">Nome</label>
 
-        <div>
-          <label htmlFor="name">Nome</label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                maxLength={150}
+                required
+              />
+            </div>
 
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            maxLength={150}
-            required
-          />
-        </div>
+            <div className={styles.field}>
+              <div className={styles.labelRow}>
+                <label htmlFor="bio">Bio</label>
+                <span>{bio.length}/160</span>
+              </div>
 
-        <div>
-          <label htmlFor="bio">Bio</label>
+              <textarea
+                id="bio"
+                value={bio}
+                onChange={(event) => setBio(event.target.value)}
+                maxLength={160}
+                rows={5}
+              />
+            </div>
 
-          <textarea
-            id="bio"
-            value={bio}
-            onChange={(event) => setBio(event.target.value)}
-            maxLength={160}
-            rows={4}
-          />
+            {successMessage && (
+              <p className={styles.success}>{successMessage}</p>
+            )}
 
-          <span>{bio.length}/160</span>
-        </div>
+            {errorMessage && <p className={styles.error}>{errorMessage}</p>}
 
-        <button type="submit" disabled={saving}>
-          {saving ? "Salvando..." : "Salvar alterações"}
-        </button>
-      </form>
-
-      {successMessage && <p>{successMessage}</p>}
-
-      {errorMessage && <p>{errorMessage}</p>}
+            <button
+              className={styles.submitButton}
+              type="submit"
+              disabled={saving}
+            >
+              {saving ? "Salvando..." : "Salvar alterações"}
+            </button>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }
