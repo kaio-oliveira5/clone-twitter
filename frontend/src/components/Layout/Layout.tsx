@@ -14,9 +14,16 @@ import styles from "./Layout.module.css";
 interface LayoutProps {
   children: ReactNode;
   onLogout: () => void;
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
 }
 
-function Layout({ children, onLogout }: LayoutProps) {
+function Layout({
+  children,
+  onLogout,
+  isDarkMode,
+  onToggleTheme,
+}: LayoutProps) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -44,7 +51,11 @@ function Layout({ children, onLogout }: LayoutProps) {
 
   return (
     <div className={styles.layout}>
-      <Navbar onLogout={onLogout} />
+      <Navbar
+        onLogout={onLogout}
+        isDarkMode={isDarkMode}
+        onToggleTheme={onToggleTheme}
+      />
 
       <div className={styles.content}>
         <aside className={styles.sidebar}>

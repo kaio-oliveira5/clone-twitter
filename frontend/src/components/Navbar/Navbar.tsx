@@ -3,9 +3,11 @@ import styles from "./Navbar.module.css";
 
 interface NavbarProps {
   onLogout: () => void;
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
 }
 
-function Navbar({ onLogout }: NavbarProps) {
+function Navbar({ onLogout, isDarkMode, onToggleTheme }: NavbarProps) {
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -37,6 +39,18 @@ function Navbar({ onLogout }: NavbarProps) {
             <Link className={styles.link} to="/followers">
               Seguidores
             </Link>
+
+            <button
+              className={styles.themeButton}
+              type="button"
+              onClick={onToggleTheme}
+              aria-label={
+                isDarkMode ? "Ativar modo claro" : "Ativar modo escuro"
+              }
+              title={isDarkMode ? "Modo claro" : "Modo escuro"}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
 
             <button
               className={styles.logoutButton}
