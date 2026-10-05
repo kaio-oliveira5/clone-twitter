@@ -46,6 +46,13 @@ function Profile() {
       const updatedProfile = await updateProfile(name, bio, profileImage);
 
       setProfile(updatedProfile);
+
+      window.dispatchEvent(
+        new CustomEvent("profileUpdated", {
+          detail: updatedProfile,
+        }),
+      );
+
       setName(updatedProfile.name);
       setBio(updatedProfile.bio);
       setProfileImage(undefined);

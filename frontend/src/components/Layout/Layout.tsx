@@ -47,6 +47,18 @@ function Layout({
     }
 
     loadProfileSidebar();
+
+    function handleProfileUpdated(event: Event) {
+      const customEvent = event as CustomEvent<UserProfile>;
+
+      setProfile(customEvent.detail);
+    }
+
+    window.addEventListener("profileUpdated", handleProfileUpdated);
+
+    return () => {
+      window.removeEventListener("profileUpdated", handleProfileUpdated);
+    };
   }, []);
 
   return (
