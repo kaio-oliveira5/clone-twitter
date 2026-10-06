@@ -39,7 +39,12 @@ function Feed() {
     async function loadFeed() {
       try {
         const data = await getFeed();
+
         setPosts(data);
+
+        setLikedPosts(
+          data.filter((post) => post.is_liked).map((post) => post.id),
+        );
       } catch (error) {
         console.error(error);
         setErrorMessage("Não foi possível carregar o feed.");

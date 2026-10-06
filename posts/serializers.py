@@ -5,6 +5,15 @@ from .models import Comment, Like, Post
 
 class PostSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source="author.username")
+    is_liked = serializers.SerializerMethodField()
+
+    def get_is_liked(self, obj):
+        request = self.context.get("request")
+
+        if not request or not request.user.is_authenticated:
+            return False
+
+        return obj.likes.filter(user=request.user).exists()
 
     class Meta:
         model = Post
@@ -14,12 +23,14 @@ class PostSerializer(serializers.ModelSerializer):
             "content",
             "created_at",
             "updated_at",
+            "is_liked",
         )
         read_only_fields = (
             "id",
             "author",
             "created_at",
             "updated_at",
+            "is_liked",
         )
 
 
