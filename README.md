@@ -92,6 +92,7 @@ React + TypeScript
 A aplicação utiliza autenticação baseada em JWT.
 Os tokens são armazenados no navegador e enviados automaticamente nas requisições autenticadas por meio de um interceptor do Axios.
 As credenciais e configurações sensíveis são fornecidas por variáveis de ambiente e não são versionadas no Git.
+
 📱 PWA
 O frontend pode ser instalado como aplicativo por meio do suporte a Progressive Web App (PWA).
 O projeto utiliza vite-plugin-pwa para geração do manifest e do Service Worker.
@@ -164,6 +165,7 @@ Entre elas estão configurações relacionadas a:
 - Cloudinary
 - VITE_API_URL
 Nunca coloque valores reais de senhas, chaves ou secrets diretamente no código ou no repositório.
+
 🚀 Deploy
 Frontend
 O frontend está publicado na Vercel:
@@ -172,9 +174,11 @@ Backend
 A API está publicada no Render:
 https://clone-twitter-549r.onrender.com
 O banco de dados PostgreSQL utilizado em produção está hospedado no Neon.
+
 📚 Projeto acadêmico
 Projeto desenvolvido para fins de estudo e portfólio durante a formação Profissão: Desenvolvedor Full Stack Python — EBAC.
 O projeto foi desenvolvido utilizando uma arquitetura separada entre frontend e backend, com API REST como camada de comunicação.
+
 👨‍💻 Autor
 Kaio Oliveira
 GitHub: https://github.com/kaio-oliveira5
