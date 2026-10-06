@@ -6,6 +6,7 @@ import Followers from "./pages/Followers/Followers";
 import Login from "./pages/Login/Login";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
+import Search from "./pages/Search/Search";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -95,6 +96,23 @@ function App() {
               onToggleTheme={toggleTheme}
             >
               <Followers />
+            </Layout>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/search"
+        element={
+          isAuthenticated ? (
+            <Layout
+              onLogout={() => setIsAuthenticated(false)}
+              isDarkMode={isDarkMode}
+              onToggleTheme={toggleTheme}
+            >
+              <Search />
             </Layout>
           ) : (
             <Navigate to="/login" replace />

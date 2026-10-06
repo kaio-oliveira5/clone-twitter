@@ -12,18 +12,45 @@ function Login({ onLogin }: LoginProps) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    setErrorMessage("");
+    setIsLoading(true);
+
+    const startTime = Date.now();
+
     try {
       await login(username, password);
+
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(1000 - elapsedTime, 0);
+
+      await new Promise((resolve) => setTimeout(resolve, remainingTime));
 
       onLogin();
 
       navigate("/feed");
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(1000 - elapsedTime, 0);
+
+      await new Promise((resolve) => setTimeout(resolve, remainingTime));
+
+      if (error.response?.status === 401) {
+        setErrorMessage("Usuário ou senha incorretos.");
+      } else if (error.response?.status === 400) {
+        setErrorMessage("Verifique os dados informados e tente novamente.");
+      } else {
+        setErrorMessage("Não foi possível entrar. Tente novamente mais tarde.");
+      }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -62,8 +89,18 @@ function Login({ onLogin }: LoginProps) {
             />
           </div>
 
-          <button className={styles.submitButton} type="submit">
-            Entrar
+          {errorMessage && (
+            <p role="alert" className={styles.errorMessage}>
+              {errorMessage}
+            </p>
+          )}
+
+          <button
+            className={styles.submitButton}
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? "Entrando..." : "Entrar"}
           </button>
         </form>
 

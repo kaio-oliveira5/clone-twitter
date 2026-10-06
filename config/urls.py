@@ -22,6 +22,7 @@ from users.views import (
     FollowUserView,
     MeView,
     RegisterView,
+    UserSearchView,
 )
 
 
@@ -75,6 +76,11 @@ urlpatterns = [
         name="feed",
     ),
 
+    path(
+        "api/users/search/",
+        UserSearchView.as_view(),
+        name="user-search",
+    ),
     path(
         "api/users/<int:user_id>/follow/",
         FollowUserView.as_view(),

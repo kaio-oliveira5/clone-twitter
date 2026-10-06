@@ -32,6 +32,10 @@ function Navbar({ onLogout, isDarkMode, onToggleTheme }: NavbarProps) {
               Feed
             </Link>
 
+            <Link className={styles.link} to="/search">
+              Buscar
+            </Link>
+
             <Link className={styles.link} to="/profile">
               Meu perfil
             </Link>

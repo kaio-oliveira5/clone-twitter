@@ -70,3 +70,13 @@ export async function unfollowUser(userId: number) {
 
   return response.data;
 }
+
+export async function searchUsers(search: string) {
+  const response = await api.get<UserProfile[]>("/users/search/", {
+    params: {
+      search,
+    },
+  });
+
+  return response.data;
+}

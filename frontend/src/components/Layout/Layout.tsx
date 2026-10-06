@@ -28,25 +28,36 @@ function Layout({
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
 
+  async function loadFollowCounts(userId: number) {
+    try {
+      const [followers, following] = await Promise.all([
+        getFollowers(userId),
+        getFollowing(userId),
+      ]);
+
+      setFollowersCount(followers.length);
+      setFollowingCount(following.length);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
+    let userId: number | null = null;
+
     async function loadProfileSidebar() {
       try {
         const user = await getProfile();
 
-        const [followers, following] = await Promise.all([
-          getFollowers(user.id),
-          getFollowing(user.id),
-        ]);
+        userId = user.id;
 
         setProfile(user);
-        setFollowersCount(followers.length);
-        setFollowingCount(following.length);
+
+        await loadFollowCounts(user.id);
       } catch (error) {
         console.error(error);
       }
     }
-
-    loadProfileSidebar();
 
     function handleProfileUpdated(event: Event) {
       const customEvent = event as CustomEvent<UserProfile>;
@@ -54,10 +65,20 @@ function Layout({
       setProfile(customEvent.detail);
     }
 
+    function handleFollowUpdated() {
+      if (userId !== null) {
+        loadFollowCounts(userId);
+      }
+    }
+
+    loadProfileSidebar();
+
     window.addEventListener("profileUpdated", handleProfileUpdated);
+    window.addEventListener("followUpdated", handleFollowUpdated);
 
     return () => {
       window.removeEventListener("profileUpdated", handleProfileUpdated);
+      window.removeEventListener("followUpdated", handleFollowUpdated);
     };
   }, []);
 

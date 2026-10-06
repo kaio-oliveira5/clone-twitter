@@ -12,7 +12,6 @@ from .serializers import (
     UserSerializer,
 )
 
-
 User = get_user_model()
 
 
@@ -110,4 +109,21 @@ class FollowersListView(generics.ListAPIView):
     def get_queryset(self):
         return User.objects.filter(
             following__following_id=self.kwargs["user_id"]
+        )
+
+
+class UserSearchView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        search = self.request.query_params.get("search", "").strip()
+
+        if not search:
+            return User.objects.none()
+
+        return User.objects.filter(
+            username__icontains=search
+        ) | User.objects.filter(
+            name__icontains=search
         )
